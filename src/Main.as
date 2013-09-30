@@ -15,15 +15,19 @@ package
 		private var tEnemyStats:TextField = new TextField;
 		private var tRound:TextField = new TextField;
 		private var tEnd:TextField = new TextField;
+		
 		private var heroHealthPoints:int = 100;
 		private var heroAttackDamage:int = 25;
 		private var heroDefence:int = 5;
-		private var heroDamage:Number;
-		private var enemyName:String = "Goblin";
 		private var enemyHealthPoints:int = 100;
 		private var enemyAttackDamage:int = 20;
 		private var enemyDefence:int = 5;
-		private var enemyDamage:Number = Math.ceil(Math.random() * 15);
+		
+		private var heroDamage:Number;
+		private var enemyDamage:Number;
+		
+		private var enemyName:String = "Goblin";
+		
 		
 		public function Main():void 
 		{
@@ -34,13 +38,13 @@ package
 		private function init(e:Event = null):void 
 		{
 			removeEventListener(Event.ADDED_TO_STAGE, init);
+			
 			// entry point
 			tRound.border = true;
 			tRound.width = 350;
 			tRound.height = 599;
 			tRound.wordWrap = true;
 			
-			//Endgame
 			tEnd.x = 550;
 			tEnd.width = 200;
 			tEnd.border = true;
@@ -60,10 +64,8 @@ package
 			tEnemyStats.y = 100;
 			
 			//Random damage loop per round (Hero+Enemy)
-			
 			for (var i:int = 1; i <= 10; i++)
 			{
-				// ADD defensive value factors
 				heroDamage = Math.floor(Math.random() * heroAttackDamage)
 				enemyDamage = Math.floor(Math.random() * enemyAttackDamage)
 				enemyHealthPoints -= heroDamage;
@@ -85,40 +87,43 @@ package
 				{
 					tRound.appendText("Round: " + i + "\n" + "You inflicted " + heroDamage + " damage onto the " + enemyName + "." + " But the Goblin missed, hence, you lost 0 health this round." + "\n\n");
 				}
+				
 				//On death
 				if (heroHealthPoints <= 0 && enemyHealthPoints <= 0)
 				{
 					heroHealthPoints = 0
 					enemyHealthPoints = 0
 					tEnd.text = "It's a tie"
-					addChild(tEnd);
+					
 					break
 				}
 				else if (heroHealthPoints <= 0)
 				{
 					heroHealthPoints = 0
 					tEnd.text = "You lose"
-					addChild(tEnd);
+					
 					break
 				}
 				else if (enemyHealthPoints <= 0)
 				{
 					enemyHealthPoints = 0
 					tEnd.text = "You win!"
-					addChild(tEnd);
+					
 					break
 				}
 				else if (enemyHealthPoints >= 1 && heroHealthPoints >= 1)
 				{
 					tEnd.text = "It's a tie"
-					addChild(tEnd);
+					
+					//loop over, no need for break
 				}
 			}
-			
 			
 			addChild(tHeroStats);
 			addChild(tEnemyStats);
 			addChild(tRound);
+			addChild(tEnd);
+			
 			stage.addEventListener(Event.ENTER_FRAME, gameloop);
 		}
 		
